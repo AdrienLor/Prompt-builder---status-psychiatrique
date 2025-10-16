@@ -284,6 +284,34 @@ div.opts-radio label.is-checked::before {
     box-shadow: inset 0 0 0 4px var(--bg-card);
 }
 
+/* ---- STYLE POUR L'AVERTISSEMENT DE CONFIDENTIALITÉ ---- */
+.warning-box {
+  background-color: #fef2f2; /* Fond rouge très clair */
+  border: 1px solid #fca5a5; /* Bordure rouge clair */
+  border-left: 4px solid #ef4444; /* Bordure gauche rouge vif pour l'emphase */
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin: 16px 0;
+  color: #991b1b; /* Texte rouge foncé */
+}
+
+.warning-box .warning-title {
+  font-weight: 700;
+  color: #b91c1c; /* Titre rouge plus foncé */
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.warning-box p {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.warning-box strong {
+    color: #b91c1c;
+}
+
 </style>
 </head>
 
@@ -311,6 +339,11 @@ div.opts-radio label.is-checked::before {
             </select>
         </div>
     </div>
+</div>
+<div class="warning-box">
+    <div class="warning-title">⚠️ Avertissement Important : Confidentialité des Données</div>
+    <p>N'incluez <strong>JAMAIS</strong> d'informations permettant d'identifier un patient dans ce formulaire. Cet outil n'est pas sécurisé pour les données de santé sensibles.</p>
+    <p><strong>Exemples d'informations interdites :</strong> nom, initiales, date de naissance, numéro de dossier, adresse, etc. Utilisez uniquement des descriptions cliniques anonymes.</p>
 </div>
 <p class="hint">Cocher uniquement ce qui est présent/pertinent et ajouter des précisions si besoin. Cliquer « Générer le prompt » pour finaliser.</p>
 
