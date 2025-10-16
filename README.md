@@ -5,7 +5,7 @@ Cet outil web est conçu pour aider les professionnels de la santé et les étud
 ## Utilisation
 
 1.  **Accès direct :** L'outil est accessible en ligne https://adrienlor.github.io/Prompt-builder---status-psychiatrique/
-2.  **Utilisation locale :** Téléchargez le fichier `Prompt_builder-Status_v.1.1.html` et ouvrez-le dans n'importe quel navigateur web.
+2.  **Utilisation locale :** Téléchargez le fichier `index.html` et ouvrez-le dans n'importe quel navigateur web.
 
 ## Fonctionnalités
 
