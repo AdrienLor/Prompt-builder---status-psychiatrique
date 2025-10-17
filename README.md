@@ -1,4 +1,4 @@
-# Prompt Builder – Status Psychiatrique
+# assistant-redaction-clinique : Status Psychiatrique
 
 Cet outil web est conçu pour aider les professionnels de la santé et les étudiants à construire une synthèse structurée et détaillée pour la rédaction d'un status psychiatrique (MSE).
 
