@@ -4,7 +4,7 @@ Cet outil web est conçu pour aider les professionnels de la santé et les étud
 
 ## Utilisation
 
-1.  **Accès direct :** L'outil est accessible en ligne https://adrienlor.github.io/Prompt-builder---status-psychiatrique/
+1.  **Accès direct :** L'outil est accessible en ligne https://adrienlor.github.io/assistant-redaction-clinique/
 2.  **Utilisation locale :** Téléchargez le fichier `index.html` et ouvrez-le dans n'importe quel navigateur web.
 
 ## Fonctionnalités
