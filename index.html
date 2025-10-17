@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8" />
-<title>Prompt Builder – Status psychiatrique</title>
+<title>Assistant de Rédaction – Status psychiatrique</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
 :root {
@@ -318,13 +318,13 @@ div.opts-radio label.is-checked::before {
 
 <body>
 
-<h1>Prompt Builder – Status psychiatrique</h1>
-<h2>Paramètres du prompt</h2>
+<h1>Assistant de Rédaction Clinique</h1>
+<h2>Paramètres de rédaction</h2>
 <div class="card">
     <div class="grid2">
         <div>
-            <label for="stylePrompt"><strong>Style de rédaction :</strong></label>
-            <select id="stylePrompt">
+            <label for="reportStyle"><strong>Style de rédaction :</strong></label>
+            <select id="reportStyle">
                 <option value="narratif" selected>Bloc narratif unique</option>
                 <option value="detaille">Statut détaillé par rubriques</option>
             </select>
@@ -343,9 +343,9 @@ div.opts-radio label.is-checked::before {
 <div class="warning-box">
     <div class="warning-title">⚠️ Avertissement Important : Confidentialité des Données</div>
     <p>N'incluez <strong>JAMAIS</strong> d'informations permettant d'identifier un patient dans ce formulaire. Cet outil n'est pas sécurisé pour les données de santé sensibles.</p>
-    <p><strong>Exemples d'informations interdites :</strong> nom, initiales, date de naissance, numéro de dossier, adresse, etc. Utilisez uniquement des descriptions cliniques anonymes.</p>
+    <p><strong>Exemples d'informations interdites :</strong> nom, initiales, date de naissance, numéro de dossier, adresse, etc.</p>
+    <p>Utilisez uniquement des descriptions cliniques anonymes et fictives.</p>
 </div>
-<p class="hint">Cocher uniquement ce qui est présent/pertinent et ajouter des précisions si besoin. Cliquer « Générer le prompt » pour finaliser.</p>
 
 <div class="actions">
   <button id="toggleAll" class="secondary">Tout replier</button>
@@ -781,12 +781,12 @@ div.opts-radio label.is-checked::before {
 
 <!-- Actions + Sortie -->
 <div class="actions">
-  <button id="generate">Générer le prompt</button>
-  <button class="secondary" id="copy">Copier le prompt</button>
+  <button id="generate">Rédiger la synthèse</button>
+  <button class="secondary" id="copy">Copier la synthèse</button>
   <button class="secondary" id="reset">Réinitialiser</button>
 </div>
 
-<h2>Prompt généré</h2>
+<h2>Synthèse clinique</h2>
 <div id="output"></div>
 
 <script>
@@ -1120,8 +1120,8 @@ function buildJ(){
 }
 
 /* ----------- master prompt ----------- */
-function buildPrompt(){
-  const style = $("stylePrompt").value; // narratif | detaille
+function buildReport(){
+  const style = $("reportStyle").value; // narratif | detaille
   const gender = $("patientGender").value; //
   const patient = txtv("patientId");
 
@@ -1172,7 +1172,7 @@ function buildPrompt(){
 
 /* ----------- UI handlers ----------- */
 $("generate").addEventListener("click", () => {
-  $("output").textContent = buildPrompt();
+  $("output").textContent = buildReport();
 });
 
 $("copy").addEventListener("click", (e) => {
