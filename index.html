@@ -1209,7 +1209,8 @@ $("reset").addEventListener("click", () => {
   document.querySelectorAll("input[type=text], textarea").forEach(el => el.value = "");
   $("patientGender").value = "non-precise";
   $("output").textContent = "";
-  updateSectionHighlights();  // ← remet tous les titres à la couleur normale
+  updateSectionHighlights(); 
+  updateCheckboxVisuals();
 });
 
 /* ----------- blocs repliables ----------- */
@@ -1304,15 +1305,17 @@ function initializeSectionResets() {
       event.stopPropagation();
 
       const content = section.nextElementSibling;
-        if (content) {
-          // Décoche toutes les cases
-          content.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
-          // Vide tous les champs de texte et zones de texte
-          content.querySelectorAll('input[type=text], textarea').forEach(el => el.value = "");
-          
-          // Met à jour immédiatement la couleur de l'en-tête
-          updateSectionHighlights();
-        }      
+      if (content) {
+        // Décoche toutes les cases
+        content.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
+        // Vide tous les champs de texte et zones de texte
+        content.querySelectorAll('input[type=text], textarea').forEach(el => el.value = "");
+        
+        // Met à jour immédiatement la couleur de l'en-tête
+        updateSectionHighlights();
+        // LIGNE À AJOUTER : Met à jour l'apparence des cases
+        updateCheckboxVisuals(); 
+      }     
     });
   });
 }
