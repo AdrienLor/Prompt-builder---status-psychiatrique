@@ -312,6 +312,19 @@ div.opts-radio label.is-checked::before {
     color: #b91c1c;
 }
 
+/* ---- NOUVEAU STYLE POUR L'OPTION MAÎTRESSE ET LE SÉPARATEUR ---- */
+.master-option {
+  font-weight: 600; /* Met le texte en semi-gras pour le distinguer */
+}
+
+.separator {
+  border: none;
+  border-top: 1px solid #e2e8f0; /* Un trait fin et discret */
+  margin: 8px 0;
+  width: 100%;
+  grid-column: 1 / -1; /* Assure que le trait prend toute la largeur du grid */
+}
+
 </style>
 </head>
 
@@ -754,12 +767,16 @@ div.opts-radio label.is-checked::before {
     <div class="card">
       <div class="group-title">Évaluation du risque suicidaire</div>
       <div class="opts">
-        <label><input type="checkbox" id="r_s_1"> Pensé qu’il vaudrait mieux être mort(e) ou souhait de mort</label>
+        <label class="master-option"><input type="checkbox" id="r_s_none"> Aucune idéation suicidaire</label>
+        
+        <hr class="separator">
+
+        <label><input type="checkbox" id="r_s_1"> Souhait de mort</label>
         <label><input type="checkbox" id="r_s_2"> Voulu se faire du mal</label>
-        <label><input type="checkbox" id="r_s_3"> Pensé à se suicider</label>
-        <label><input type="checkbox" id="r_s_4"> Établi la façon dont se suicider</label>
-        <label><input type="checkbox" id="r_s_5"> Fait une tentative de suicide (dernier mois)</label>
-        <label><input type="checkbox" id="r_s_6"> Tentative de suicide au cours de la vie</label>
+        <label><input type="checkbox" id="r_s_3"> Pensées suicidaires</label>
+        <label><input type="checkbox" id="r_s_4"> Planification</label>
+        <label><input type="checkbox" id="r_s_5"> Tentative de suicide (dernier mois)</label>
+        <label><input type="checkbox" id="r_s_6"> Antécédent de tentative de suicide</label>
       </div>
       <div class="sub">Remarques libres (risque suicidaire)</div>
       <textarea id="r_s_rem" rows="4" placeholder="ex. idéation passive sans planification, antécédent unique en 2018…"></textarea>
@@ -768,10 +785,14 @@ div.opts-radio label.is-checked::before {
     <div class="card">
       <div class="group-title">Évaluation du risque hétéro-agressif</div>
       <div class="opts">
-        <label><input type="checkbox" id="r_h_1"> Antécédents de passage à l’acte hétéro-agressif</label>
-        <label><input type="checkbox" id="r_h_2"> Idées actuelles de passage à l’acte hétéro-agressif</label>
-        <label><input type="checkbox" id="r_h_3"> Accessibilité des moyens pour un passage à l’acte déterminé</label>
-        <label><input type="checkbox" id="r_h_4"> Possession ou projet d’acquisition d’une arme à feu</label>
+        <label class="master-option"><input type="checkbox" id="r_h_none"> Aucun risque hétéro-agressif identifié</label>
+        
+        <hr class="separator">
+
+        <label><input type="checkbox" id="r_h_1"> Antécédents de passage à l’acte</label>
+        <label><input type="checkbox" id="r_h_2"> Idées actuelles de passage à l’acte</label>
+        <label><input type="checkbox" id="r_h_3"> Accès à des moyens</label>
+        <label><input type="checkbox" id="r_h_4"> Possession/projet d’arme à feu</label>
       </div>
       <div class="sub">Remarques libres (risque hétéro-agressif)</div>
       <textarea id="r_h_rem" rows="4" placeholder="ex. antécédent judiciaire ancien, absence d’accès actuel à des armes…"></textarea>
@@ -794,6 +815,8 @@ div.opts-radio label.is-checked::before {
 function $(id){ return document.getElementById(id); }
 function val(id){ const el=$(id); return el && el.checked; }
 function txtv(id){ const el=$(id); return el ? (el.value || "").trim() : ""; }
+
+/* ----------- EXCLUSIVITE SIMPLE ------------- */
 function makeExclusive(ids){
   ids.forEach(id => {
     const el=$(id); if(!el) return;
@@ -802,6 +825,38 @@ function makeExclusive(ids){
         ids.forEach(other => { if (other !== id && $(other)) $(other).checked = false; });
       }
     });
+  });
+}
+
+/* ----------- EXCLUSIVITÉ ASYMÉTRIQUE ----------- */
+function makeMasterExclusive(masterId, slaveIds) {
+  const masterEl = $(masterId);
+  if (!masterEl) return;
+
+  // Si l'option "maître" (Aucun risque) est cochée, on décoche toutes les autres.
+  masterEl.addEventListener('change', () => {
+    if (masterEl.checked) {
+      slaveIds.forEach(id => {
+        const el = $(id);
+        if (el) el.checked = false;
+      });
+      // On force la mise à jour visuelle des cases qui ont été modifiées par le code.
+      updateCheckboxVisuals(); 
+    }
+  });
+
+  // Si n'importe quelle autre option est cochée, on décoche l'option "maître".
+  slaveIds.forEach(slaveId => {
+    const slaveEl = $(slaveId);
+    if (slaveEl) {
+      slaveEl.addEventListener('change', () => {
+        if (slaveEl.checked) {
+          masterEl.checked = false;
+          // On force la mise à jour visuelle de la case "maître".
+          updateCheckboxVisuals();
+        }
+      });
+    }
   });
 }
 
@@ -840,8 +895,9 @@ makeExclusive(["mot_act_norm","mot_act_dim","mot_act_aug","mot_act_alt"]);
 /* exclusivités I */
 makeExclusive(["ins_abs","ins_part","ins_comp"]);
 makeExclusive(["jug_ok","jug_alt","jug_imp"]);
-/* exclusivités J (risque suicidaire niveau) */
-
+/* exclusivités J (logique asymétrique) */
+makeMasterExclusive('r_s_none', ['r_s_1', 'r_s_2', 'r_s_3', 'r_s_4', 'r_s_5', 'r_s_6']);
+makeMasterExclusive('r_h_none', ['r_h_1', 'r_h_2', 'r_h_3', 'r_h_4']);
 
 /* ----------- builders par section ----------- */
 function buildA(){
@@ -1094,6 +1150,7 @@ function buildJ(){
 
   // --- Risque suicidaire ---
   const suic = [];
+  if (val("r_s_none")) suic.push("absence d'idéation suicidaire"); 
   if (val("r_s_1")) suic.push("pensées de mort ou souhait d’être mort(e)");
   if (val("r_s_2")) suic.push("envie de se faire du mal");
   if (val("r_s_3")) suic.push("pensées suicidaires");
@@ -1107,6 +1164,7 @@ function buildJ(){
 
   // --- Risque hétéro-agressif ---
   const hetero = [];
+  if (val("r_h_none")) hetero.push("aucun risque identifié");
   if (val("r_h_1")) hetero.push("antécédents de passage à l’acte hétéro-agressif");
   if (val("r_h_2")) hetero.push("idées actuelles de passage à l’acte hétéro-agressif");
   if (val("r_h_3")) hetero.push("accessibilité des moyens pour un passage à l’acte déterminé");
